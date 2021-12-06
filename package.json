@@ -1,0 +1,43 @@
+{
+  "name": "noisedot",
+  "version": "1.0.0",
+  "description": "noisedot is a webapp where sound samples are posted on a map",
+  "main": "backend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamieRollison/noisedot.git"
+  },
+  "keywords": [
+    "web",
+    "app",
+    "sound",
+    "samples",
+    "audio",
+    "social",
+    "media",
+    "field",
+    "recordings",
+    "music",
+    "geolocation",
+    "maps",
+    "music",
+    "production",
+    "noise"
+  ],
+  "author": "Owen Cushing, Jamie Rollison",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/jamieRollison/noisedot/issues"
+  },
+  "homepage": "https://github.com/jamieRollison/noisedot#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase": "^9.6.0",
+    "node-fetch": "^3.1.0",
+    "path": "^0.12.7",
+    "uuid": "^8.3.2"
+  }
+}

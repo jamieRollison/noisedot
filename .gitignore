@@ -1,0 +1,8 @@
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+node_modules
+key.js
+.swiftpm
