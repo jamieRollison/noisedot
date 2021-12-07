@@ -43,11 +43,21 @@ var locationIcon = L.icon({
   popupAnchor:  [0, -16] // point from which the popup should open relative to the iconAnchor
 })
 
+var selectedIcon = L.icon({
+  iconUrl: "/logos/selected dot.png",
+  iconSize:     [32, 32], // size of the icon
+  shadowSize:   [50, 64], // size of the shadow
+  iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+  shadowAnchor: [4, 62],  // the same for the shadow
+  popupAnchor:  [0, -16] // point from which the popup should open relative to the iconAnchor
+})
+
 // set up variables
 var div = document.getElementById("clicked marker")
 var aName, nameText
 var audio
 var aDescription
+var selectedMarker
 
 //----- ISR Marker (for testing)---------
 // var isr = L.marker([40.11057618021301, -88.22185298950282], {icon: soundDot}).addTo(map)
@@ -87,22 +97,29 @@ navigator.geolocation.getCurrentPosition(success, error, navOptions)
 // Makes a map marker from a given ID.
 async function soundOnMap(id) {
 
-    // create options object for GET request
-    var fetchJSONOptions = {
-        headers: {
-          'Content-Type': 'application/json',
-          id: JSON.stringify(id)
-        } 
+  // create options object for GET request
+  var fetchJSONOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      id: JSON.stringify(id)
+    } 
+  }
+
+  // GET json file from server
+  const data = await fetch('/firebaseJson', fetchJSONOptions)
+  .then(response => response.json())
+
+  // create map maker from JSON
+  new L.marker([data.location.latitude, data.location.longitude], {icon: soundDot})
+  .addTo(map)
+  .on("click", (e) => {
+    if (selectedMarker != undefined) {
+      selectedMarker.setIcon(soundDot)
     }
-
-    // GET json file from server
-    const data = await fetch('/firebaseJson', fetchJSONOptions)
-    .then(response => response.json())
-
-    // create map maker from JSON
-    new L.marker([data.location.latitude, data.location.longitude], {icon: soundDot})
-    .addTo(map)
-    .on("click", () => clickMarker(data));
+    selectedMarker = e.target
+    selectedMarker.setIcon(selectedIcon)
+    clickMarker(data)
+  });
 }
 
 
