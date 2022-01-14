@@ -122,11 +122,17 @@ async function soundOnMap(id) {
   });
 }
 
+// hashmap from file name to blob. this way the blobs only need to be fetched once.
+const blobs = new Map();
+
+
 
 // Function to be ran on marker click.
 // Fetches audio and appends it to the bottom of the page.
 async function clickMarker(data) {
     
+  console.log(blobs)
+
     // this basically just replaces mp3 with 'mpeg' for MIME type
     var fileType
     if (data.type == 'mp3')
@@ -141,15 +147,26 @@ async function clickMarker(data) {
           file: data.fileName
         } 
     }
-
-    // Fetches audio from server.
-    var audioSource = await fetch('/firebaseAudio', fetchAudioOptions)
-    .then(response => response.text())
-    .then(url => fetch(url))
-    .then(download => download.blob())
-    .then(blob => URL.createObjectURL(blob))
-    .catch(e => console.log(`Error occured: ${e}`))
     
+    var audioSource = undefined
+
+    if (blobs.has(data.fileName)) {
+      audioSource = blobs.get(data.fileName)
+    }
+    else {
+      // Fetches audio from server.
+      audioSource = await fetch('/firebaseAudio', fetchAudioOptions)
+      .then(response => response.text())
+      .then(url => fetch(url))
+      .then(download => download.blob())
+      .then(blob => {
+        let temp = URL.createObjectURL(blob)
+        blobs.set(data.fileName, temp)
+        return temp
+      })
+      .catch(e => console.log(`Error occured: ${e}`))
+    }
+
     // updates the title element on the page
     aName = document.getElementById('aName')
     aName.textContent = `Name: ${data.name}`;
