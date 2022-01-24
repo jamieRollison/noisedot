@@ -126,13 +126,10 @@ async function soundOnMap(id) {
 const blobs = new Map();
 
 
-
 // Function to be ran on marker click.
 // Fetches audio and appends it to the bottom of the page.
 async function clickMarker(data) {
     
-  console.log(blobs)
-
     // this basically just replaces mp3 with 'mpeg' for MIME type
     var fileType
     if (data.type == 'mp3')

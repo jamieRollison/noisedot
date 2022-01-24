@@ -116,8 +116,8 @@ app.post('/firebaseAudio', (req, res) => {
 })
 
 //uploads the JSON info to firebase db
-app.post('/firebaseJSON', (req, res) => {
-    // get the generated UUID from req
+app.post('/uploadJSON', (req, res) => {
+    console.log(req.body)
     res.end()
 })
 
