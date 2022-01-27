@@ -115,12 +115,12 @@ app.post('/uploadAudio', (req, res) => {
 
 //uploads the JSON info to firebase db
 app.post('/uploadJSON', (req, res) => {
+    req.body.timestamp = Timestamp.fromMillis(req.body.timestamp)
     console.log(req.body)
     let docName = uuid.v4().replace(/-/g, "").substring(0,20)
     setDoc(firebaseFirestore.doc(db, "dots", docName), req.body)
     res.end()
 })
-
 
 // runs app on both https and http
 module.exports = app
