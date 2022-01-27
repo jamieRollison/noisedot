@@ -21,7 +21,10 @@ if (uploadButton) {
       'location': {
         'lat': globalLatLng.lat,
         'lng': globalLatLng.lng,
-      }
+      },
+      'uploader': 'user',
+      'timestamp': Date.now(),
+      'type': filePath.value.split('.').pop()
     }
     console.log(jsonToUpload);
     postToDatabase(jsonToUpload)

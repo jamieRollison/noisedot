@@ -80,7 +80,7 @@ function success(pos) {
     var crd = pos.coords
     originalLocation = [crd.latitude, crd.longitude]
     console.log('Your current position is:')
-    console.log(`Latitude : ${crd.latitude}`)
+    console.log(`Latitude : ${crd.latitude}`) 
     console.log(`Longitude: ${crd.longitude}`)
     console.log(`More or less ${crd.accuracy} meters.`)
     userMark = L.marker([crd.latitude, crd.longitude], {icon: logo}).addTo(map)

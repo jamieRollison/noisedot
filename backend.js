@@ -1,4 +1,4 @@
-//const uuid = require('uuid');
+const uuid = require('uuid')
 const path = require('path')
 const express = require('express')
 
@@ -6,7 +6,7 @@ const express = require('express')
 const initFirebase = require('firebase/app')
 const firebaseStorage = require('firebase/storage')
 const firebaseFirestore = require('firebase/firestore')
-const {getFirestore, Timestamp, FieldValue, GeoPoint} = require('firebase/firestore')
+const {getFirestore, Timestamp, FieldValue, GeoPoint, setDoc} = require('firebase/firestore')
 const key = require(path.resolve( __dirname, "./key.js"))
 
 const firebaseConfig = {
@@ -22,9 +22,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebase = initFirebase.initializeApp(firebaseConfig) // is a firebase app instance
 const storage = firebaseStorage.getStorage(firebase) // is a FirebaseStorage Instance
-const db = firebaseFirestore.getFirestore(firebase) // should be a FirebaseStorage Instance
+const db = getFirestore(firebase); // should be a FirebaseStorage Instance
 const dots = firebaseFirestore.collection(db, 'dots')
-
 
 // build app
 const app = express()
@@ -47,7 +46,6 @@ async function getJsonList() {
     })
     console.log("initialized!")
 }
-
 
 // initial endpoint. we might change this to the map later.
 app.get('/', (_, res) =>
@@ -96,7 +94,7 @@ app.get('/getAudioList', (_, res) => {
 })
 
 //uploads the JSON info to firebase db
-app.post('/firebaseAudio', (req, res) => {
+app.post('/uploadAudio', (req, res) => {
     // get the generated UUID from req
     // get the fileType from req
     //---- Possible Things for Uploading File ----
@@ -118,6 +116,8 @@ app.post('/firebaseAudio', (req, res) => {
 //uploads the JSON info to firebase db
 app.post('/uploadJSON', (req, res) => {
     console.log(req.body)
+    let docName = uuid.v4().replace(/-/g, "").substring(0,20)
+    setDoc(firebaseFirestore.doc(db, "dots", docName), req.body)
     res.end()
 })
 
